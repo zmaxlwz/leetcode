@@ -23,6 +23,35 @@ public class Solution {
 		return maxArray;
 	}
 
+	public int[] maxSlidingWindow2(int[] nums, int k){
+		
+		if(nums == null || nums.length == 0){
+            return new int[0];
+        }
+		
+		int length = nums.length;
+		int[] result = new int[length-k+1];
+		
+		LinkedList<Integer> deque = new LinkedList<Integer>();
+		for(int i=0;i<length;i++){
+			while(!deque.isEmpty() && deque.getLast() < nums[i]){
+				deque.removeLast();
+			}
+			deque.offer(nums[i]);
+			
+			if(i>=k){
+				if(deque.peek() == nums[i-k]){
+					deque.poll();
+				}
+			}
+			
+			if(i>=k-1){
+				result[i-k+1] = deque.peek();
+			}
+		}
+		
+		return result;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -30,7 +59,7 @@ public class Solution {
 		Solution sol = new Solution();
 		int[] nums = {1,3,-1,-3,5,3,6,7};
 		int k=3;
-		int[] result = sol.maxSlidingWindow(nums, k);
+		int[] result = sol.maxSlidingWindow2(nums, k);
 		for(int i=0;i<result.length;i++){
 			System.out.print(result[i] + ", ");
 		}
